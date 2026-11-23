@@ -1,94 +1,111 @@
-# **Infrastructure Monitoring (Metrics) – Short Notes**
+
+# Infrastructure Monitoring (Metrics) – Short Notes
 
 Infrastructure monitoring tracks server resources to ensure applications run smoothly and efficiently.
 
-The four main resources are **CPU, Memory, Network, and Disk.**
+The four main resources are **CPU, Memory, Network, and Disk**.
 
-## **1. CPU Monitoring**
+---
 
-**CPU (Central Processing Unit)** is the brain of the server. It processes instructions, calculations, application requests and background tasks.
+## 1. CPU Monitoring
 
-- Measured in: **Percentage (%)**
-- CPU cores: Number of processing units.
-- CPU utilization: Percentage of CPU capacity being used.
-- Load average: Number of tasks running or waiting for resources over 1, 5 and 15 minutes.
+**CPU (Central Processing Unit)** is the brain of the server. It processes instructions, calculations, application requests, and background tasks.
 
-| Usage   | Interpretation  |
-| ------- | --------------- |
-| 0–30%   | Low             |
-| 30–70%  | Normal/moderate |
-| 70–85%  | High            |
-| 85–95%  | Very high       |
-| 95–100% | Critical        |
+### Important Concepts
 
-Commands:
+- **Measured in:** Percentage (%)
+- **CPU Cores:** Number of processing units.
+- **CPU Utilization:** Percentage of CPU capacity being used.
+- **Load Average:** Number of tasks running or waiting for resources over 1, 5, and 15 minutes.
 
-```
+### CPU Usage Levels
+
+| Usage | Interpretation |
+|---|---|
+| 0–30% | Low |
+| 30–70% | Normal / Moderate |
+| 70–85% | High |
+| 85–95% | Very High |
+| 95–100% | Critical |
+
+### Linux Commands
+
+```bash
 top
 htop
 uptime
 mpstat -P ALL 1
 ```
 
-## **2. Memory Monitoring (RAM)**
+---
+
+## 2. Memory Monitoring (RAM)
 
 **RAM (Random Access Memory)** is temporary storage used by running applications and processes.
 
-- Measured in: MB, GB, percentage.
-- Used: Memory currently occupied.
-- Free: Completely unused memory.
-- Available: Estimated memory available for applications.
-- Swap: Disk space used as an extension of RAM when memory pressure increases.
-- OOM: Out Of Memory, when the system cannot satisfy memory requirements and may kill processes.
+### Important Concepts
 
-| Usage   | Interpretation |
-| ------- | -------------- |
-| 0–50%   | Normal         |
-| 50–75%  | Moderate       |
-| 75–85%  | High           |
-| 85–95%  | Very high      |
-| 95–100% | Critical       |
+- **Measured in:** MB, GB, Percentage.
+- **Used:** Memory currently occupied.
+- **Free:** Completely unused memory.
+- **Available:** Estimated memory available for applications.
+- **Swap:** Disk space used as an extension of RAM when memory pressure increases.
+- **OOM (Out Of Memory):** Occurs when the system cannot satisfy memory requirements and may kill processes.
 
-Commands:
+### Memory Usage Levels
 
-```
+| Usage | Interpretation |
+|---|---|
+| 0–50% | Normal |
+| 50–75% | Moderate |
+| 75–85% | High |
+| 85–95% | Very High |
+| 95–100% | Critical |
+
+### Linux Commands
+
+```bash
 free -h
 top
 vmstat 1
 ps aux --sort=-%mem | head
 ```
 
-## **3. Network Monitoring**
+---
 
-Network monitoring tracks data communication between servers, users, databases and external services.
+## 3. Network Monitoring
 
-**Important metrics:**
+Network monitoring tracks data communication between servers, users, databases, and external services.
 
-| Metric        | Meaning                                              |
-| ------------- | ---------------------------------------------------- |
-| RX (Receive)  | Incoming traffic                                     |
-| TX (Transmit) | Outgoing traffic                                     |
-| Bandwidth     | Maximum data transfer capacity                       |
-| Latency       | Time taken for data to travel                        |
-| Packet loss   | Percentage of packets that fail to reach destination |
+### Important Network Metrics
 
-Units:
+| Metric | Meaning |
+|---|---|
+| RX (Receive) | Incoming traffic |
+| TX (Transmit) | Outgoing traffic |
+| Bandwidth | Maximum data transfer capacity |
+| Latency | Time taken for data to travel |
+| Packet Loss | Percentage of packets that fail to reach their destination |
 
-- bps: Bits per second
-- Kbps: Kilobits per second
-- Mbps: Megabits per second
-- Gbps: Gigabits per second
-- Latency: Milliseconds (ms)
+### Network Units
 
-Remember:
+- **bps:** Bits per second
+- **Kbps:** Kilobits per second
+- **Mbps:** Megabits per second
+- **Gbps:** Gigabits per second
+- **Latency:** Milliseconds (ms)
 
-**1 Byte = 8 bits**
+**Remember:**
 
-Example: 100 Mbps = 12.5 MB/s (theoretical maximum).
+1 Byte = 8 bits
 
-Commands:
+Example:
 
-```
+100 Mbps = 12.5 MB/s (theoretical maximum).
+
+### Linux Commands
+
+```bash
 ip -s link
 iftop
 nload
@@ -96,32 +113,32 @@ ss -tulnp
 ping google.com
 ```
 
-## **4. Disk Monitoring (Storage)**
+---
+
+## 4. Disk Monitoring (Storage)
 
 Disk monitoring tracks storage space and disk read/write performance.
 
-**Two important aspects:**
+### A. Disk Space
 
-**A. Disk Space**
+- **Total:** Total storage capacity.
+- **Used:** Occupied storage.
+- **Free:** Remaining storage.
+- **Inode:** Data structure used to store file metadata. Inodes can run out even when disk space remains.
 
-- Total: Total storage capacity.
-- Used: Occupied storage.
-- Free: Remaining storage.
-- Inode: Data structure used to store file metadata. Inodes can run out even when disk space remains.
+### B. Disk I/O (Input/Output)
 
-**B. Disk I/O (Input/Output)**
+| Metric | Meaning |
+|---|---|
+| IOPS | Input/Output operations per second |
+| Read Throughput | Data read per second |
+| Write Throughput | Data written per second |
+| I/O Latency | Time taken for disk operations |
+| I/O Utilization | How busy the disk is |
 
-| Metric           | Meaning                            |
-| ---------------- | ---------------------------------- |
-| IOPS             | Input/Output operations per second |
-| Read throughput  | Data read per second               |
-| Write throughput | Data written per second            |
-| I/O latency      | Time taken for disk operations     |
-| I/O utilization  | How busy the disk is               |
+### Linux Commands
 
-Commands:
-
-```
+```bash
 df -h
 df -i
 du -sh /var/log
@@ -129,58 +146,85 @@ iostat -xz 1
 ncdu /
 ```
 
-## **5. Quick Revision Table**
+---
 
-| Resource    | What it monitors     | Unit           |
-| ----------- | -------------------- | -------------- |
-| CPU         | Processing usage     | %              |
-| Memory      | RAM consumption      | MB / GB / %    |
-| Network     | Data transfer        | Mbps / Gbps    |
-| Disk        | Storage consumption  | GB / TB / %    |
-| IOPS        | Disk operations      | Operations/sec |
-| Latency     | Response time        | ms             |
-| Packet loss | Lost network packets | %              |
+## 5. Quick Revision Table
 
-## **6. Monitoring Tools**
+| Resource | What It Monitors | Unit |
+|---|---|---|
+| CPU | Processing usage | % |
+| Memory | RAM consumption | MB / GB / % |
+| Network | Data transfer | Mbps / Gbps |
+| Disk | Storage consumption | GB / TB / % |
+| IOPS | Disk operations | Operations/sec |
+| Latency | Response time | ms |
+| Packet Loss | Lost network packets | % |
 
-| Tool          | Purpose                          |
-| ------------- | -------------------------------- |
-| Prometheus    | Collects and stores metrics      |
-| Grafana       | Visualizes metrics in dashboards |
-| Node Exporter | Exposes Linux system metrics     |
-| Alertmanager  | Manages and routes alerts        |
+---
 
-## **7. Prometheus + Grafana Architecture**
+## 6. Monitoring Tools
 
-**Linux Server**
+| Tool | Purpose |
+|---|---|
+| [Prometheus](https://prometheus.io/) | Collects and stores metrics |
+| [Grafana](https://grafana.com/) | Visualizes metrics in dashboards |
+| [Node Exporter](https://github.com/prometheus/node_exporter) | Exposes Linux system metrics |
+| [Alertmanager](https://prometheus.io/docs/alerting/latest/alertmanager/) | Manages and routes alerts |
 
-CPU · RAM · Network · Disk
+---
 
-**Node Exporter**
+## 7. Prometheus + Grafana Architecture
 
-Exposes metrics
+```text
+Linux Server
+(CPU / RAM / Network / Disk)
+        |
+        v
+   Node Exporter
+   (Exposes Metrics)
+        |
+        v
+    Prometheus
+ (Collects & Stores Metrics)
+        |
+        +------------------+
+        |                  |
+        v                  v
+     Grafana           Alertmanager
+   (Dashboards)       (Notifications)
+```
 
-**Prometheus**
+### Component Responsibilities
 
-Collects and stores metrics
+1. **Node Exporter:** Collects and exposes Linux system metrics.
+2. **Prometheus:** Scrapes, stores, and evaluates metrics.
+3. **Grafana:** Displays metrics through dashboards and graphs.
+4. **Alertmanager:** Handles and routes alert notifications.
 
-**Grafana**
+---
 
-Dashboards
+## 8. Example Production Alert Thresholds
 
-**Alertmanager**
+| Metric | Warning | Critical |
+|---|---|---|
+| CPU | 85% | 95% |
+| Memory | 85% | 95% |
+| Disk | 80% | 90% |
+| Packet Loss | 1% | 2% |
 
-Notifications
+> **Note:** These are example thresholds. Actual thresholds depend on workload and infrastructure.
 
-## **8. Example Production Alert Thresholds**
+---
 
-| Metric      | Warning | Critical |
-| ----------- | ------- | -------- |
-| CPU         | 85%     | 95%      |
-| Memory      | 85%     | 95%      |
-| Disk        | 80%     | 90%      |
-| Packet loss | 1%      | 2%       |
+## 9. Key Takeaways
 
-*These are example thresholds. Actual thresholds depend on workload and infrastructure.*
+Monitoring helps DevOps engineers:
 
-**Remember:** Monitoring helps DevOps engineers identify resource bottlenecks, troubleshoot performance issues, prevent downtime and maintain application availability.
+- Identify resource bottlenecks.
+- Troubleshoot performance issues.
+- Detect unusual resource consumption.
+- Prevent infrastructure downtime.
+- Maintain application availability.
+- Improve infrastructure performance.
+
+**Remember:** Infrastructure monitoring is not just about watching metrics. It is about identifying problems, understanding their root causes, and resolving them before they affect users.
