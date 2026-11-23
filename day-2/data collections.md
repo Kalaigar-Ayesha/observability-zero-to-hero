@@ -3,6 +3,7 @@
 ## 1. Basic Concept
 
 An AWS EC2 Linux server is isolated from the outside world by default, but it can still communicate with other systems through private networking or outbound connections.
+Q:"If the EC2 instance is isolated, how can external tools like Prometheus, Grafana, Loki, or Jaeger collect its metrics, logs, and traces?"
 
 To collect observability data, we use **agents, exporters, and collectors**.
 
