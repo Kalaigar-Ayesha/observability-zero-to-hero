@@ -1,0 +1,186 @@
+# **Infrastructure Monitoring (Metrics) – Short Notes**
+
+Infrastructure monitoring tracks server resources to ensure applications run smoothly and efficiently.
+
+The four main resources are **CPU, Memory, Network, and Disk.**
+
+## **1. CPU Monitoring**
+
+**CPU (Central Processing Unit)** is the brain of the server. It processes instructions, calculations, application requests and background tasks.
+
+- Measured in: **Percentage (%)**
+- CPU cores: Number of processing units.
+- CPU utilization: Percentage of CPU capacity being used.
+- Load average: Number of tasks running or waiting for resources over 1, 5 and 15 minutes.
+
+| Usage   | Interpretation  |
+| ------- | --------------- |
+| 0–30%   | Low             |
+| 30–70%  | Normal/moderate |
+| 70–85%  | High            |
+| 85–95%  | Very high       |
+| 95–100% | Critical        |
+
+Commands:
+
+```
+top
+htop
+uptime
+mpstat -P ALL 1
+```
+
+## **2. Memory Monitoring (RAM)**
+
+**RAM (Random Access Memory)** is temporary storage used by running applications and processes.
+
+- Measured in: MB, GB, percentage.
+- Used: Memory currently occupied.
+- Free: Completely unused memory.
+- Available: Estimated memory available for applications.
+- Swap: Disk space used as an extension of RAM when memory pressure increases.
+- OOM: Out Of Memory, when the system cannot satisfy memory requirements and may kill processes.
+
+| Usage   | Interpretation |
+| ------- | -------------- |
+| 0–50%   | Normal         |
+| 50–75%  | Moderate       |
+| 75–85%  | High           |
+| 85–95%  | Very high      |
+| 95–100% | Critical       |
+
+Commands:
+
+```
+free -h
+top
+vmstat 1
+ps aux --sort=-%mem | head
+```
+
+## **3. Network Monitoring**
+
+Network monitoring tracks data communication between servers, users, databases and external services.
+
+**Important metrics:**
+
+| Metric        | Meaning                                              |
+| ------------- | ---------------------------------------------------- |
+| RX (Receive)  | Incoming traffic                                     |
+| TX (Transmit) | Outgoing traffic                                     |
+| Bandwidth     | Maximum data transfer capacity                       |
+| Latency       | Time taken for data to travel                        |
+| Packet loss   | Percentage of packets that fail to reach destination |
+
+Units:
+
+- bps: Bits per second
+- Kbps: Kilobits per second
+- Mbps: Megabits per second
+- Gbps: Gigabits per second
+- Latency: Milliseconds (ms)
+
+Remember:
+
+**1 Byte = 8 bits**
+
+Example: 100 Mbps = 12.5 MB/s (theoretical maximum).
+
+Commands:
+
+```
+ip -s link
+iftop
+nload
+ss -tulnp
+ping google.com
+```
+
+## **4. Disk Monitoring (Storage)**
+
+Disk monitoring tracks storage space and disk read/write performance.
+
+**Two important aspects:**
+
+**A. Disk Space**
+
+- Total: Total storage capacity.
+- Used: Occupied storage.
+- Free: Remaining storage.
+- Inode: Data structure used to store file metadata. Inodes can run out even when disk space remains.
+
+**B. Disk I/O (Input/Output)**
+
+| Metric           | Meaning                            |
+| ---------------- | ---------------------------------- |
+| IOPS             | Input/Output operations per second |
+| Read throughput  | Data read per second               |
+| Write throughput | Data written per second            |
+| I/O latency      | Time taken for disk operations     |
+| I/O utilization  | How busy the disk is               |
+
+Commands:
+
+```
+df -h
+df -i
+du -sh /var/log
+iostat -xz 1
+ncdu /
+```
+
+## **5. Quick Revision Table**
+
+| Resource    | What it monitors     | Unit           |
+| ----------- | -------------------- | -------------- |
+| CPU         | Processing usage     | %              |
+| Memory      | RAM consumption      | MB / GB / %    |
+| Network     | Data transfer        | Mbps / Gbps    |
+| Disk        | Storage consumption  | GB / TB / %    |
+| IOPS        | Disk operations      | Operations/sec |
+| Latency     | Response time        | ms             |
+| Packet loss | Lost network packets | %              |
+
+## **6. Monitoring Tools**
+
+| Tool          | Purpose                          |
+| ------------- | -------------------------------- |
+| Prometheus    | Collects and stores metrics      |
+| Grafana       | Visualizes metrics in dashboards |
+| Node Exporter | Exposes Linux system metrics     |
+| Alertmanager  | Manages and routes alerts        |
+
+## **7. Prometheus + Grafana Architecture**
+
+**Linux Server**
+
+CPU · RAM · Network · Disk
+
+**Node Exporter**
+
+Exposes metrics
+
+**Prometheus**
+
+Collects and stores metrics
+
+**Grafana**
+
+Dashboards
+
+**Alertmanager**
+
+Notifications
+
+## **8. Example Production Alert Thresholds**
+
+| Metric      | Warning | Critical |
+| ----------- | ------- | -------- |
+| CPU         | 85%     | 95%      |
+| Memory      | 85%     | 95%      |
+| Disk        | 80%     | 90%      |
+| Packet loss | 1%      | 2%       |
+
+*These are example thresholds. Actual thresholds depend on workload and infrastructure.*
+
+**Remember:** Monitoring helps DevOps engineers identify resource bottlenecks, troubleshoot performance issues, prevent downtime and maintain application availability.
